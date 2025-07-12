@@ -148,6 +148,10 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
       position: relative;
     }
+    /* Hide Bedrooms filter by default */
+    .filter-item.bedrooms-filter {
+        display: none;
+    }
 
     /* Styles from Page 3 (Recent Carousel) */
     #recent-carousel-section .carousel-container {
@@ -371,18 +375,27 @@
     <div class="container">
       <h2 class="text-center mb-4">🏡 NJK PROPERTY | ARCHIVE</h2>
       <div class="row g-2 justify-content-center mb-4">
-        <div class="col-md-2"><select class="form-select" id="filterTypeArchive">
-          <option value="">All Types</option><option>Plot</option><option>Bungalow</option><option>Flat</option><option>Shop</option><option>Basement</option><option>Office</option><option>Warehouse</option>
-        </select></div>
+        <div class="col-md-2">
+          <select class="form-select" id="filterTypeArchive" onchange="toggleBedroomsFilter('archive')">
+            <option value="">All Types</option><option>Plot</option><option>Bungalow</option><option>Flat</option><option>Shop</option><option>Basement</option><option>Office</option><option>Warehouse</option>
+          </select>
+        </div>
         <div class="col-md-2"><select class="form-select" id="filterPurposeArchive">
           <option value="">All Purposes</option><option>Rent</option><option>Sale</option>
         </select></div>
-        <div class="col-md-2"><input type="text" class="form-control" id="filterLocationArchive" placeholder="Location" /></div>
-        <div class="col-md-2"><input type="number" class="form-control" id="filterBedroomsArchive" placeholder="Bedrooms" /></div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="filterLocationArchive" placeholder="Location" list="locationListArchive" />
+          <datalist id="locationListArchive"></datalist>
+        </div>
+        <div class="col-md-2 filter-item bedrooms-filter" id="bedroomsFilterArchive">
+          <input type="number" class="form-control" id="filterBedroomsArchive" placeholder="Bedrooms" />
+        </div>
         <div class="col-md-2"><input type="number" class="form-control" id="minAreaArchive" placeholder="Min Area" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="maxAreaArchive" placeholder="Max Area" /></div>
         <div class="col-md-2"><input type="text" class="form-control" id="keywordArchive" placeholder="Keyword" /></div>
-        <div class="col-md-2"><input type="date" class="form-control" id="filterDateArchive" placeholder="Filter by date" /></div>
+        <div class="col-md-2">
+          <input type="date" class="form-control" id="filterDateArchive" placeholder="Filter by date" title="Filter by date" />
+        </div>
         <div class="col-md-2"><input type="number" class="form-control" id="minPriceArchive" placeholder="Min Price" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="maxPriceArchive" placeholder="Max Price" /></div>
         <div class="col-md-2"><button class="btn btn-primary w-100" onclick="applyFiltersArchive()">🔍 Filter</button></div>
@@ -397,14 +410,21 @@
     <div class="container">
       <h2 class="text-center mb-4">🆕 NJK PROPERTY | RECENT POSTS</h2>
       <div id="carousel-filters" class="row g-2 justify-content-center mb-4">
-        <div class="col-md-2"><select class="form-select" id="filterTypeCarousel">
-          <option value="">All Types</option><option>Plot</option><option>Bungalow</option><option>Flat</option><option>Shop</option><option>Basement</option><option>Office</option><option>Warehouse</option>
-        </select></div>
+        <div class="col-md-2">
+          <select class="form-select" id="filterTypeCarousel" onchange="toggleBedroomsFilter('carousel')">
+            <option value="">All Types</option><option>Plot</option><option>Bungalow</option><option>Flat</option><option>Shop</option><option>Basement</option><option>Office</option><option>Warehouse</option>
+          </select>
+        </div>
         <div class="col-md-2"><select class="form-select" id="filterPurposeCarousel">
           <option value="">All Purposes</option><option>Rent</option><option>Sale</option>
         </select></div>
-        <div class="col-md-2"><input type="text" class="form-control" id="filterLocationCarousel" placeholder="Location" /></div>
-        <div class="col-md-2"><input type="number" class="form-control" id="filterBedroomsCarousel" placeholder="Bedrooms" /></div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="filterLocationCarousel" placeholder="Location" list="locationListCarousel" />
+          <datalist id="locationListCarousel"></datalist>
+        </div>
+        <div class="col-md-2 filter-item bedrooms-filter" id="bedroomsFilterCarousel">
+          <input type="number" class="form-control" id="filterBedroomsCarousel" placeholder="Bedrooms" />
+        </div>
         <div class="col-md-2"><input type="number" class="form-control" id="minAreaCarousel" placeholder="Min Area" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="maxAreaCarousel" placeholder="Max Area" /></div>
         <div class="col-md-2"><input type="text" class="form-control" id="keywordCarousel" placeholder="Keyword" /></div>
@@ -419,7 +439,7 @@
       <h1 class="text-center mb-4">NJK PROPERTY | MAGAZINE VIEW</h1>
       <div class="row g-2 justify-content-center mb-4" id="filters">
         <div class="col-sm-6 col-md-2">
-          <select id="filterTypeMagazine" class="form-select">
+          <select id="filterTypeMagazine" class="form-select" onchange="toggleBedroomsFilter('magazine')">
             <option value="">All Types</option>
             <option>Plot</option>
             <option>Bungalow</option>
@@ -443,7 +463,7 @@
         <div class="col-sm-6 col-md-2">
           <input type="number" id="maxPriceMagazine" class="form-control" placeholder="Max Price" />
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-2 filter-item bedrooms-filter" id="bedroomsFilterMagazine">
           <input type="number" id="bedroomCountMagazine" class="form-control" placeholder="Bedrooms" />
         </div>
         <div class="col-sm-6 col-md-2">
@@ -457,7 +477,7 @@
           <datalist id="locationListMagazine"></datalist>
         </div>
         <div class="col-sm-6 col-md-2">
-          <input type="date" class="form-control" id="filterDateMagazine" placeholder="Filter by date" />
+          <input type="date" class="form-control" id="filterDateMagazine" placeholder="Filter by date" title="Filter by date" />
         </div>
         <div class="col-sm-6 col-md-3">
           <input type="text" id="keywordMagazine" class="form-control" placeholder="Keyword in Description" />
@@ -560,23 +580,92 @@
       });
     });
 
+    // --- Conditional Bedrooms Filter Visibility ---
+    function toggleBedroomsFilter(section) {
+      const typeSelect = document.getElementById(`filterType${section.charAt(0).toUpperCase() + section.slice(1)}`);
+      const bedroomsFilterDiv = document.getElementById(`bedroomsFilter${section.charAt(0).toUpperCase() + section.slice(1)}`);
+
+      if (typeSelect.value === 'Bungalow' || typeSelect.value === 'Flat') {
+        bedroomsFilterDiv.style.display = 'block'; // Show the filter
+      } else {
+        bedroomsFilterDiv.style.display = 'none'; // Hide the filter
+        // Optionally clear the bedrooms input when hidden
+        const bedroomsInput = bedroomsFilterDiv.querySelector('input[type="number"]');
+        if (bedroomsInput) bedroomsInput.value = '';
+      }
+    }
+
+    // --- Common Filter Clear Function ---
+    function clearFilters(section) {
+      const filterPrefix = section.charAt(0).toUpperCase() + section.slice(1);
+      const filterIds = [
+        `filterType${filterPrefix}`, `filterPurpose${filterPrefix}`,
+        `filterLocation${filterPrefix}`, `filterBedrooms${filterPrefix}`,
+        `minArea${filterPrefix}`, `maxArea${filterPrefix}`,
+        `keyword${filterPrefix}`, `filterDate${filterPrefix}`,
+        `minPrice${filterPrefix}`, `maxPrice${filterPrefix}`
+      ];
+      filterIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          if (element.tagName === 'SELECT') {
+            element.value = ''; // Reset select to first option (All)
+          } else if (element.type === 'date' || element.type === 'text' || element.type === 'number') {
+            element.value = ''; // Clear text/number/date inputs
+          }
+        }
+      });
+      // Ensure bedrooms filter is hidden if type is not Bungalow/Flat after clearing
+      toggleBedroomsFilter(section.toLowerCase()); // Pass lower case like 'archive'
+    }
+
     // --- Common View Card for Archive, Recent, Magazine ---
     function viewCommonCard(post) {
       const phone = post.Contact.toString().replace(/[^0-9]/g, "");
-      const message = encodeURIComponent(`Hello ${post.Agent}, I'm interested in your property: ${post.Title}`);
+      
+      let bedroomInfo = '';
+      let bathroomInfo = '';
+      if (post.Type === 'Bungalow' || post.Type === 'Flat') {
+          bedroomInfo = `Bedrooms: ${post.Bedrooms || 'N/A'}\n`;
+          bathroomInfo = `Bathrooms: ${post.Bathrooms || 'N/A'}\n`;
+      }
+
+      const fullDetails = `Hello ${post.Agent},\n\nI'm interested in your property ad:\n\n` +
+                          `Title: ${post.Title}\n` +
+                          `Description: ${post.Description}\n` +
+                          `Type: ${post.Type}\n` +
+                          `Purpose: ${post.Purpose}\n` +
+                          `Location: ${post.Location} ${post.LocationInput || ''}\n` +
+                          `Area: ${post.AreaValue} ${post.AreaUnit}\n` +
+                          `${bedroomInfo}` + // Conditionally add bedroom info for WhatsApp
+                          `${bathroomInfo}` + // Conditionally add bathroom info for WhatsApp
+                          `Price: ${post.Price}\n` +
+                          `Agency: ${post.Agency}\n` +
+                          `Posted On: ${new Date(post.Date).toLocaleDateString()}\n\n` +
+                          `Please share more details.`;
+
+      const message = encodeURIComponent(fullDetails);
       const link = phone.length >= 10 ? `https://wa.me/${phone}?text=${message}` : `sms:${phone}?body=${message}`;
-      document.getElementById("commonCardDetails").innerHTML = `
+      
+      // Build HTML for the card, conditionally including bedrooms/bathrooms for the popup view
+      let cardDetailsHTML = `
         <h4>${post.Title}</h4>
         <p><strong>Description:</strong> ${post.Description}</p>
         <p><strong>Type:</strong> ${post.Type}</p>
         <p><strong>Purpose:</strong> ${post.Purpose}</p>
         <p><strong>Area:</strong> ${post.AreaValue} ${post.AreaUnit}</p>
-        <p><strong>Bedrooms:</strong> ${post.Bedrooms || 'N/A'}</p>
-        <p><strong>Bathrooms:</strong> ${post.Bathrooms || 'N/A'}</p>
+      `;
+      if (post.Type === 'Bungalow' || post.Type === 'Flat') {
+        cardDetailsHTML += `<p><strong>Bedrooms:</strong> ${post.Bedrooms || 'N/A'}</p>
+                           <p><strong>Bathrooms:</strong> ${post.Bathrooms || 'N/A'}</p>`;
+      }
+      cardDetailsHTML += `
         <p><strong>Agency:</strong> ${post.Agency}</p>
         <p><strong>Agent:</strong> ${post.Agent}</p>
         <p><strong>Posted On:</strong> ${new Date(post.Date).toLocaleDateString()}</p>
         <a href="${link}" class="btn btn-success w-100" target="_blank">Contact via WhatsApp</a>`;
+
+      document.getElementById("commonCardDetails").innerHTML = cardDetailsHTML;
       document.getElementById("commonViewCard").style.display = "flex";
     }
 
@@ -594,6 +683,7 @@
         const json = await res.json();
         if (json.status === "success") {
           allPostsArchive = json.data.reverse();
+          populateLocationSuggestions('archive', allPostsArchive);
           applyFiltersArchive(); // Apply filters immediately after loading, including default date
         } else {
           document.getElementById("archiveList").innerHTML = '<div class="no-data">Failed to load posts.</div>';
@@ -661,7 +751,13 @@
         if (dateFilter) {
           dateCondition = postDate.toISOString().split("T")[0] === dateFilter;
         } else {
+          // Default: only show posts from the last 30 days if no specific date is picked
           dateCondition = postDate >= thirtyDaysAgo;
+        }
+
+        let bedroomCondition = true;
+        if (type === 'Bungalow' || type === 'Flat') {
+            bedroomCondition = bedrooms === "" || postBedrooms === parseInt(bedrooms);
         }
 
         return (
@@ -672,13 +768,14 @@
           (dateCondition) &&
           (minPrice === "" || price >= parseFloat(minPrice)) &&
           (maxPrice === "" || price <= parseFloat(maxPrice)) &&
-          (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (bedroomCondition) && // Use the conditional bedroom
           (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
           (maxArea === "" || postAreaValue <= parseFloat(maxArea))
         );
       });
       currentPageArchive = 1;
       renderListArchive();
+      clearFilters('Archive'); // Clear filters after applying
     }
 
     // --- Page 3: Recent Carousel Logic ---
@@ -689,7 +786,8 @@
         const res = await fetch(ENDPOINT);
         const json = await res.json();
         if (json.status === "success" && json.data.length > 0) {
-          allPostsCarousel = json.data.reverse().slice(0, 30);
+          allPostsCarousel = json.data.reverse().slice(0, 30); // Limit to 30 recent posts
+          populateLocationSuggestions('carousel', allPostsCarousel);
           renderCarouselRecent(allPostsCarousel); // Initial render without filters
         } else {
           renderCarouselRecent([]);
@@ -737,18 +835,24 @@
         const postBedrooms = parseInt(post.Bedrooms || 0);
         const postAreaValue = parseFloat(post.AreaValue) || 0;
 
+        let bedroomCondition = true;
+        if (type === 'Bungalow' || type === 'Flat') {
+            bedroomCondition = bedrooms === "" || postBedrooms === parseInt(bedrooms);
+        }
+
         return (
           (type === "" || post.Type === type) &&
           (purpose === "" || post.Purpose === purpose) &&
           (location === "" || loc.includes(location)) &&
           (keyword === "" || (post.Description && post.Description.toLowerCase().includes(keyword))) &&
-          (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (bedroomCondition) && // Use the conditional bedroom
           (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
           (maxArea === "" || postAreaValue <= parseFloat(maxArea))
         );
       });
       renderCarouselRecent(filtered);
       document.getElementById('recent-carousel-section').scrollTo({ top: document.getElementById("carousel").offsetTop - 40, behavior: "smooth" });
+      clearFilters('Carousel'); // Clear filters after applying
     }
 
     // --- Page 4: Magazine Table Logic ---
@@ -762,7 +866,7 @@
         const json = await res.json();
         if (json.status === "success") {
           allDataMagazine = json.data.reverse();
-          populateLocationSuggestionsMagazine();
+          populateLocationSuggestions('magazine', allDataMagazine);
           applyFiltersMagazine(); // Apply filters immediately after loading, including default date
         } else {
           document.getElementById("propertyTableMagazine").innerHTML = '<tr><td colspan="9" class="text-center">Failed to load data.</td></tr>';
@@ -773,20 +877,23 @@
       }
     }
 
-    function populateLocationSuggestionsMagazine() {
+    function populateLocationSuggestions(section, data) {
       const locationSet = new Set();
-      allDataMagazine.forEach(item => {
+      data.forEach(item => {
         const fullLoc = `${item.Location} ${item.LocationInput || ''}`.trim();
         if (fullLoc) locationSet.add(fullLoc);
       });
-      const datalist = document.getElementById("locationListMagazine");
-      datalist.innerHTML = "";
-      [...locationSet].forEach(loc => {
-        const option = document.createElement("option");
-        option.value = loc;
-        datalist.appendChild(option);
-      });
+      const datalist = document.getElementById(`locationList${section.charAt(0).toUpperCase() + section.slice(1)}`);
+      if (datalist) { // Ensure datalist exists
+        datalist.innerHTML = "";
+        [...locationSet].forEach(loc => {
+          const option = document.createElement("option");
+          option.value = loc;
+          datalist.appendChild(option);
+        });
+      }
     }
+
 
     function applyFiltersMagazine() {
       const type = document.getElementById("filterTypeMagazine").value;
@@ -814,7 +921,13 @@
         if (dateFilter) {
           dateCondition = postDate.toISOString().split("T")[0] === dateFilter;
         } else {
+          // Default: only show posts from the last 30 days if no specific date is picked
           dateCondition = postDate >= thirtyDaysAgo;
+        }
+
+        let bedroomCondition = true;
+        if (type === 'Bungalow' || type === 'Flat') {
+            bedroomCondition = bedrooms === "" || postBedrooms === parseInt(bedrooms);
         }
 
         return (
@@ -822,7 +935,7 @@
           (purpose === "" || item.Purpose === purpose) &&
           (minPrice === "" || price >= parseFloat(minPrice)) &&
           (maxPrice === "" || price <= parseFloat(maxPrice)) &&
-          (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (bedroomCondition) && // Use the conditional bedroom
           (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
           (maxArea === "" || postAreaValue <= parseFloat(maxArea)) &&
           (location === "" || fullLoc.includes(location)) &&
@@ -833,6 +946,7 @@
       currentPageMagazine = 1;
       renderPageMagazine(currentPageMagazine);
       renderPaginationMagazine();
+      clearFilters('Magazine'); // Clear filters after applying
     }
 
     function renderPageMagazine(page) {
@@ -882,6 +996,10 @@
     // Initialize the SPA by showing the default page (Archive)
     document.addEventListener('DOMContentLoaded', () => {
       showPage('archive-section');
+      // Initialize bedroom filter visibility on page load for all sections
+      toggleBedroomsFilter('archive');
+      toggleBedroomsFilter('carousel');
+      toggleBedroomsFilter('magazine');
     });
   </script>
 </body>

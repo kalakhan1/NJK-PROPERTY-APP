@@ -379,6 +379,8 @@
         </select></div>
         <div class="col-md-2"><input type="text" class="form-control" id="filterLocationArchive" placeholder="Location" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="filterBedroomsArchive" placeholder="Bedrooms" /></div>
+        <div class="col-md-2"><input type="number" class="form-control" id="minAreaArchive" placeholder="Min Area" /></div>
+        <div class="col-md-2"><input type="number" class="form-control" id="maxAreaArchive" placeholder="Max Area" /></div>
         <div class="col-md-2"><input type="text" class="form-control" id="keywordArchive" placeholder="Keyword" /></div>
         <div class="col-md-2"><input type="date" class="form-control" id="filterDateArchive" placeholder="Filter by date" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="minPriceArchive" placeholder="Min Price" /></div>
@@ -403,6 +405,8 @@
         </select></div>
         <div class="col-md-2"><input type="text" class="form-control" id="filterLocationCarousel" placeholder="Location" /></div>
         <div class="col-md-2"><input type="number" class="form-control" id="filterBedroomsCarousel" placeholder="Bedrooms" /></div>
+        <div class="col-md-2"><input type="number" class="form-control" id="minAreaCarousel" placeholder="Min Area" /></div>
+        <div class="col-md-2"><input type="number" class="form-control" id="maxAreaCarousel" placeholder="Max Area" /></div>
         <div class="col-md-2"><input type="text" class="form-control" id="keywordCarousel" placeholder="Keyword" /></div>
         <div class="col-md-2"><button class="btn btn-primary w-100" onclick="applyCarouselFilters()">🔍 Filter</button></div>
       </div>
@@ -443,6 +447,12 @@
           <input type="number" id="bedroomCountMagazine" class="form-control" placeholder="Bedrooms" />
         </div>
         <div class="col-sm-6 col-md-2">
+          <input type="number" class="form-control" id="minAreaMagazine" placeholder="Min Area" />
+        </div>
+        <div class="col-sm-6 col-md-2">
+          <input type="number" class="form-control" id="maxAreaMagazine" placeholder="Max Area" />
+        </div>
+        <div class="col-sm-6 col-md-2">
           <input type="text" id="filterLocationMagazine" list="locationListMagazine" class="form-control" placeholder="Location" />
           <datalist id="locationListMagazine"></datalist>
         </div>
@@ -460,7 +470,7 @@
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead class="table-dark">
-            <tr><th>Title</th><th>Type</th><th>Purpose</th><th>View</th><th>Price</th><th>Location</th><th>Agency</th><th>Agent</th></tr>
+            <tr><th>Title</th><th>Type</th><th>Purpose</th><th>Area</th><th>Price</th><th>Location</th><th>Agency</th><th>Agent</th><th>View</th></tr>
           </thead>
           <tbody id="propertyTableMagazine"></tbody>
         </table>
@@ -602,6 +612,7 @@
         <div class="archive-item">
           <h5>${post.Title}</h5>
           <p><strong>Type:</strong> ${post.Type}</p>
+          <p><strong>Area:</strong> ${post.AreaValue || 'N/A'} ${post.AreaUnit || ''}</p>
           <p><strong>Price:</strong> ${post.Price}</p>
           <p><strong>Location:</strong> ${post.Location} ${post.LocationInput || ''}</p>
           <button class="btn btn-sm btn-outline-success" onclick='viewCommonCard(${JSON.stringify(post)})'>View</button>
@@ -633,6 +644,8 @@
       const minPrice = document.getElementById("minPriceArchive").value;
       const maxPrice = document.getElementById("maxPriceArchive").value;
       const bedrooms = document.getElementById("filterBedroomsArchive").value;
+      const minArea = document.getElementById("minAreaArchive").value;
+      const maxArea = document.getElementById("maxAreaArchive").value;
 
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -642,6 +655,7 @@
         const postDate = new Date(post.Date);
         const price = parseFloat(post.Price) || 0;
         const postBedrooms = parseInt(post.Bedrooms || 0);
+        const postAreaValue = parseFloat(post.AreaValue) || 0;
 
         let dateCondition = true;
         if (dateFilter) {
@@ -658,7 +672,9 @@
           (dateCondition) &&
           (minPrice === "" || price >= parseFloat(minPrice)) &&
           (maxPrice === "" || price <= parseFloat(maxPrice)) &&
-          (bedrooms === "" || postBedrooms === parseInt(bedrooms))
+          (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
+          (maxArea === "" || postAreaValue <= parseFloat(maxArea))
         );
       });
       currentPageArchive = 1;
@@ -697,6 +713,7 @@
         card.innerHTML = `
           <h5>${post.Title}</h5>
           <p><strong>Type:</strong> ${post.Type}</p>
+          <p><strong>Area:</strong> ${post.AreaValue || 'N/A'} ${post.AreaUnit || ''}</p>
           <p><strong>Price:</strong> ${post.Price}</p>
           <p><strong>Location:</strong> ${post.Location} ${post.LocationInput || ''}</p>
           <p><strong>Purpose:</strong> ${post.Purpose}</p>
@@ -712,16 +729,22 @@
       const location = document.getElementById("filterLocationCarousel").value.toLowerCase();
       const keyword = document.getElementById("keywordCarousel").value.toLowerCase();
       const bedrooms = document.getElementById("filterBedroomsCarousel").value;
+      const minArea = document.getElementById("minAreaCarousel").value;
+      const maxArea = document.getElementById("maxAreaCarousel").value;
 
       const filtered = allPostsCarousel.filter(post => {
         const loc = `${post.Location} ${post.LocationInput || ''}`.toLowerCase();
         const postBedrooms = parseInt(post.Bedrooms || 0);
+        const postAreaValue = parseFloat(post.AreaValue) || 0;
+
         return (
           (type === "" || post.Type === type) &&
           (purpose === "" || post.Purpose === purpose) &&
           (location === "" || loc.includes(location)) &&
           (keyword === "" || (post.Description && post.Description.toLowerCase().includes(keyword))) &&
-          (bedrooms === "" || postBedrooms === parseInt(bedrooms))
+          (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
+          (maxArea === "" || postAreaValue <= parseFloat(maxArea))
         );
       });
       renderCarouselRecent(filtered);
@@ -742,11 +765,11 @@
           populateLocationSuggestionsMagazine();
           applyFiltersMagazine(); // Apply filters immediately after loading, including default date
         } else {
-          document.getElementById("propertyTableMagazine").innerHTML = '<tr><td colspan="8" class="text-center">Failed to load data.</td></tr>';
+          document.getElementById("propertyTableMagazine").innerHTML = '<tr><td colspan="9" class="text-center">Failed to load data.</td></tr>';
         }
       } catch (error) {
         console.error("Fetch failed for Magazine Table:", error);
-        document.getElementById("propertyTableMagazine").innerHTML = '<tr><td colspan="8" class="text-center">Error loading data. Please try again later.</td></tr>';
+        document.getElementById("propertyTableMagazine").innerHTML = '<tr><td colspan="9" class="text-center">Error loading data. Please try again later.</td></tr>';
       }
     }
 
@@ -771,6 +794,8 @@
       const minPrice = document.getElementById("minPriceMagazine").value;
       const maxPrice = document.getElementById("maxPriceMagazine").value;
       const bedrooms = document.getElementById("bedroomCountMagazine").value;
+      const minArea = document.getElementById("minAreaMagazine").value;
+      const maxArea = document.getElementById("maxAreaMagazine").value;
       const location = document.getElementById("filterLocationMagazine").value.toLowerCase();
       const keyword = document.getElementById("keywordMagazine").value.toLowerCase();
       const dateFilter = document.getElementById("filterDateMagazine").value;
@@ -782,6 +807,7 @@
         const fullLoc = `${item.Location} ${item.LocationInput || ''}`.toLowerCase();
         const price = parseFloat(item.Price) || 0;
         const postBedrooms = parseInt(item.Bedrooms || 0);
+        const postAreaValue = parseFloat(item.AreaValue) || 0;
         const postDate = new Date(item.Date);
 
         let dateCondition = true;
@@ -797,6 +823,8 @@
           (minPrice === "" || price >= parseFloat(minPrice)) &&
           (maxPrice === "" || price <= parseFloat(maxPrice)) &&
           (bedrooms === "" || postBedrooms === parseInt(bedrooms)) &&
+          (minArea === "" || postAreaValue >= parseFloat(minArea)) &&
+          (maxArea === "" || postAreaValue <= parseFloat(maxArea)) &&
           (location === "" || fullLoc.includes(location)) &&
           (keyword === "" || (item.Description && item.Description.toLowerCase().includes(keyword))) &&
           (dateCondition)
@@ -814,7 +842,7 @@
       const tbody = document.getElementById("propertyTableMagazine");
       tbody.innerHTML = "";
       if (items.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center">No records found matching filters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center">No records found matching filters.</td></tr>';
         return;
       }
       items.forEach(item => {
@@ -823,11 +851,12 @@
           <td>${item.Title}</td>
           <td>${item.Type}</td>
           <td>${item.Purpose}</td>
-          <td><button class="btn btn-sm btn-primary" onclick='viewCommonCard(${JSON.stringify(item)})'>View</button></td>
+          <td>${item.AreaValue || 'N/A'} ${item.AreaUnit || ''}</td>
           <td>${item.Price}</td>
           <td>${item.Location} ${item.LocationInput || ''}</td>
           <td>${item.Agency}</td>
           <td>${item.Agent}</td>
+          <td><button class="btn btn-sm btn-primary" onclick='viewCommonCard(${JSON.stringify(item)})'>View</button></td>
         `;
         tbody.appendChild(tr);
       });

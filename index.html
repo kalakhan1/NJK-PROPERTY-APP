@@ -622,7 +622,7 @@
     // --- Common View Card for Archive, Recent, Magazine ---
     function viewCommonCard(post) {
       const phone = post.Contact.toString().replace(/[^0-9]/g, "");
-      
+
       let bedroomInfo = '';
       let bathroomInfo = '';
       if (post.Type === 'Bungalow' || post.Type === 'Flat') {
@@ -646,7 +646,7 @@
 
       const message = encodeURIComponent(fullDetails);
       const link = phone.length >= 10 ? `https://wa.me/${phone}?text=${message}` : `sms:${phone}?body=${message}`;
-      
+
       // Build HTML for the card, conditionally including bedrooms/bathrooms for the popup view
       let cardDetailsHTML = `
         <h4>${post.Title}</h4>
@@ -662,7 +662,7 @@
       cardDetailsHTML += `
         <p><strong>Agency:</strong> ${post.Agency}</p>
         <p><strong>Agent:</strong> ${post.Agent}</p>
-        <p><strong>Posted On:</strong> ${new Date(post.Date).toLocaleDateString()}</p>
+        <p><strong>Contact:</strong> ${post.Contact || 'N/A'}</p> <p><strong>Posted On:</strong> ${new Date(post.Date).toLocaleDateString()}</p>
         <a href="${link}" class="btn btn-success w-100" target="_blank">Contact via WhatsApp</a>`;
 
       document.getElementById("commonCardDetails").innerHTML = cardDetailsHTML;
